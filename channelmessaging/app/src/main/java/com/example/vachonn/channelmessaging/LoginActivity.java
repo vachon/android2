@@ -26,8 +26,7 @@ import javax.net.ssl.HttpsURLConnection;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, OnDownloadCompleteListener {
 
     private Button btValider;
-    private TextView txtId;
-    private TextView txtMdp;
+
     private EditText edId;
     private EditText edMdp;
     public static final String PREFS_NAME = "MyPrefsFile";
@@ -40,8 +39,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btValider = (Button) findViewById(R.id.btValider);
         btValider.setOnClickListener(this);
 
-        txtId = (TextView) findViewById(R.id.txtId);
-        txtMdp = (TextView) findViewById(R.id.txtMdp);
 
         edId = (EditText) findViewById(R.id.edId);
         edId.setText("nvach");

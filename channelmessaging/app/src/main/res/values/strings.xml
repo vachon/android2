@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">channelmessaging</string>
+    <string name="login">nvach</string>
+    <string name="mdp">nicolasvachon</string>
 </resources>
