@@ -30,8 +30,6 @@ public class MessageAdapter extends ArrayAdapter<Message> {
         txtMessage = (TextView) rowView.findViewById(R.id.txtMessage);
         txtMessage.setText(getItem(position).message);
 
-        txtNom = (TextView) rowView.findViewById(R.id.txtNom);
-        txtNom.setText(getItem(position).username);
 
         return rowView;
     }

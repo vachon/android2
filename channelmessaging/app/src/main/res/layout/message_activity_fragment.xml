@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/listViewMessages"
+        android:layout_above="@+id/linearLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:backgroundTint="#ffffff"
+        android:id="@+id/linearLayout">
+        <EditText
+            android:layout_width="187dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextMessage"
+            android:layout_weight="0.95"
+            android:backgroundTint="#ffffff" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:text="Valider"
+            android:id="@+id/valider"
+            android:background="#ffffff" />
+
+    </LinearLayout>
+
+</RelativeLayout>

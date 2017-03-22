@@ -31,11 +31,11 @@ public class MessageActivity extends AppCompatActivity implements OnDownloadComp
         super.onCreate(savedInstanceState);
         setContentView(R.layout.channel_message_activity);
 
-        edMessage = (EditText) findViewById(R.id.edMessage);
+        edMessage = (EditText) findViewById(R.id.editTextMessage);
 
-        listView = (ListView) findViewById(R.id.ltMessage);
+        listView = (ListView) findViewById(R.id.listViewMessages);
 
-        btEnvoyer = (Button) findViewById(R.id.btEnvoyer);
+        btEnvoyer = (Button) findViewById(R.id.valider);
         btEnvoyer.setOnClickListener(this);
 
         id = getIntent().getIntExtra("id",0);
@@ -77,7 +77,7 @@ public class MessageActivity extends AppCompatActivity implements OnDownloadComp
 
     @Override
     public void onClick(View v) {
-        if(v.getId() == R.id.btEnvoyer)
+        if(v.getId() == R.id.valider)
         {
             HashMap<String, String> connectInfo = new HashMap<>();
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
