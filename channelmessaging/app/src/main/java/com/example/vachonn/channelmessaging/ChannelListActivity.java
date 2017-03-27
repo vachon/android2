@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -27,13 +28,16 @@ public class ChannelListActivity extends AppCompatActivity implements OnDownload
         setContentView(R.layout.channel_list_activity);
 
         listView = (ListView) findViewById(R.id.listView);
-
-        HashMap<String, String> connectInfo = new HashMap<>();
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        connectInfo.put("accesstoken", settings.getString("accesstoken",""));
-        Async async = new Async(getApplicationContext(), connectInfo,"http://www.raphaelbischof.fr/messaging/?function=getchannels",0);
-        async.setOnDownloadCompleteListener(this);
-        async.execute();
+        if (ConnectedTest.isConnectedInternet(ChannelListActivity.this)) {
+            HashMap<String, String> connectInfo = new HashMap<>();
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            connectInfo.put("accesstoken", settings.getString("accesstoken", ""));
+            Async async = new Async(getApplicationContext(), connectInfo, "http://www.raphaelbischof.fr/messaging/?function=getchannels", 0);
+            async.setOnDownloadCompleteListener(this);
+            async.execute();
+        }
+        else
+            Toast.makeText(getApplicationContext(),"Pas d'internet",Toast.LENGTH_SHORT).show();
     }
 
     public void onDownloadComplete(String result, int requestCode) {

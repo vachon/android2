@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.vachonn.channelmessaging.ConnectedTest;
 import com.example.vachonn.channelmessaging.MessageActivity;
 import com.google.gson.Gson;
 
@@ -48,14 +49,15 @@ public class ChannelListFragment extends Fragment implements OnDownloadCompleteL
     @Override
     public void onActivityCreated(Bundle savedInstanceState)
     {
-        super.onActivityCreated(savedInstanceState);
-        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
-        HashMap<String, String> infoConnexion = new HashMap<>();
-        infoConnexion.put("accesstoken",settings.getString("accesstoken",""));
-        Async login = new Async(getActivity(),infoConnexion ,"http://www.raphaelbischof.fr/messaging/?function=getchannels",0);
-        login.setOnDownloadCompleteListener(this);
-        login.execute();
-
+        if (ConnectedTest.isConnectedInternet(getActivity())) {
+            super.onActivityCreated(savedInstanceState);
+            SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+            HashMap<String, String> infoConnexion = new HashMap<>();
+            infoConnexion.put("accesstoken", settings.getString("accesstoken", ""));
+            Async login = new Async(getActivity(), infoConnexion, "http://www.raphaelbischof.fr/messaging/?function=getchannels", 0);
+            login.setOnDownloadCompleteListener(this);
+            login.execute();
+        }
     }
 
 

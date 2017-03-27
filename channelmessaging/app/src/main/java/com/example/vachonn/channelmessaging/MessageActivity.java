@@ -42,51 +42,63 @@ public class MessageActivity extends AppCompatActivity implements OnDownloadComp
 
         Runnable r = new Runnable() {
             public void run() {
-                HashMap<String, String> connectInfo = new HashMap<>();
+                if (ConnectedTest.isConnectedInternet(MessageActivity.this)) {
+                    HashMap<String, String> connectInfo = new HashMap<>();
 
-                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-                connectInfo.put("accesstoken", settings.getString("accesstoken",""));
-                connectInfo.put("channelid", String.valueOf(id));
+                    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                    connectInfo.put("accesstoken", settings.getString("accesstoken", ""));
+                    connectInfo.put("channelid", String.valueOf(id));
 
-                Async async = new Async(getApplicationContext(), connectInfo,"http://www.raphaelbischof.fr/messaging/?function=getmessages",1);
-                async.setOnDownloadCompleteListener(MessageActivity.this);
-                async.execute();
-                handler.postDelayed(this, 1000);
+                    Async async = new Async(getApplicationContext(), connectInfo, "http://www.raphaelbischof.fr/messaging/?function=getmessages", 1);
+                    async.setOnDownloadCompleteListener(MessageActivity.this);
+                    async.execute();
+                    handler.postDelayed(this, 1000);
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"Pas d'internet",Toast.LENGTH_SHORT).show();
             }
+
         };
         handler.postDelayed(r, 1000);
 
     }
 
     public void onDownloadComplete(String result, int requestCode) {
-        Gson gson = new Gson();
-        if(requestCode == 1) {
-            Messages obj = gson.fromJson(result, Messages.class);
-            listView.setAdapter(new MessageAdapter(getApplicationContext(), R.layout.channel_message_activity, obj.messages));
-        }else {
-            MessageAEnvoyer obj = gson.fromJson(result, MessageAEnvoyer.class);
-            if(obj.code == 200) {
-                Toast.makeText(getApplicationContext(),"Message envoyé !",Toast.LENGTH_SHORT).show();
-                edMessage.setText("");
-            }
-            else{
-                Toast.makeText(getApplicationContext(),"Erreur !",Toast.LENGTH_SHORT).show();
+        if (ConnectedTest.isConnectedInternet(MessageActivity.this)) {
+            Gson gson = new Gson();
+            if (requestCode == 1) {
+                Messages obj = gson.fromJson(result, Messages.class);
+                listView.setAdapter(new MessageAdapter(getApplicationContext(), R.layout.channel_message_activity, obj.messages));
+            } else {
+                MessageAEnvoyer obj = gson.fromJson(result, MessageAEnvoyer.class);
+                if (obj.code == 200) {
+                    Toast.makeText(getApplicationContext(), "Message envoyé !", Toast.LENGTH_SHORT).show();
+                    edMessage.setText("");
+                } else {
+                    Toast.makeText(getApplicationContext(), "Erreur !", Toast.LENGTH_SHORT).show();
+                }
             }
         }
+        else
+            Toast.makeText(getApplicationContext(),"Pas d'internet",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.valider)
         {
-            HashMap<String, String> connectInfo = new HashMap<>();
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-            connectInfo.put("accesstoken", settings.getString("accesstoken",""));
-            connectInfo.put("channelid", String.valueOf(id) );
-            connectInfo.put("message", edMessage.getText().toString());
-            Async Async = new Async(getApplicationContext(), connectInfo,"http://www.raphaelbischof.fr/messaging/?function=sendmessage",2);
-            Async.setOnDownloadCompleteListener(this);
-            Async.execute();
+            if (ConnectedTest.isConnectedInternet(MessageActivity.this)) {
+                HashMap<String, String> connectInfo = new HashMap<>();
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+                connectInfo.put("accesstoken", settings.getString("accesstoken", ""));
+                connectInfo.put("channelid", String.valueOf(id));
+                connectInfo.put("message", edMessage.getText().toString());
+                Async Async = new Async(getApplicationContext(), connectInfo, "http://www.raphaelbischof.fr/messaging/?function=sendmessage", 2);
+                Async.setOnDownloadCompleteListener(this);
+                Async.execute();
+            }
+            else
+                Toast.makeText(getApplicationContext(),"Pas d'internet",Toast.LENGTH_SHORT).show();
         }
     }
 }
